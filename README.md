@@ -36,7 +36,7 @@ bool nearlyEqual(const int A, const int B, const int D) {
   return false;
 }
 ```
-<img src="Circuits/EBS-Servo.jpg"/>
+<img src="Docs/EBS-Servo.jpg"/>
 
 ---
 
@@ -148,7 +148,7 @@ void buzzer() {
   }
 }
 ```
-<img src="Circuits/EBS-Temperature.jpg"/>
+<img src="Docs/EBS-Temperature.jpg"/>
 
 ---
 
@@ -244,7 +244,7 @@ void process_sensor() {
   }
 }
 ```
-<img src="Circuits/EBS-Door.jpg"/>
+<img src="Docs/EBS-Door.jpg"/>
 
 ---
 
@@ -336,3 +336,21 @@ You keep reading the incoming bytes until you hit an end-line.
 - Copy the buffer one by one to command array in lower case.
 
 ---
+
+## Task 6
+Let's see how interrupts work in Arduino, we will have one button that will trigger an interrupt which will increment the event counter that will be handled by our task scheduler.  
+Here is how you can define an interrupt in Arduino, In the UNO version there are only 2 pins that support interrupts.
+```c
+// In Arduino only pin 2 and 3 (INT 0) and (INT 1) can have interrupts.
+const int BTN_PIN = 2;
+
+volatile int doorbell_trigger_count = 0;
+
+// In your setup function
+pinMode(BTN_PIN, INPUT_PULLUP);
+// 0 is INT 0: Digital pin 2, button_pressed is our callback, FALLING is our trigger
+// you can directly type 0 or 1 in the first parameter
+attachInterrupt(digitalPinToInterrupt(BTN_PIN), button_pressed, FALLING);
+```
+Remember to keep very simple code in ISR, also the reason ISR exist is so you can have your device in low power mode, Arduino has an include for this called `lowpower`.
+
